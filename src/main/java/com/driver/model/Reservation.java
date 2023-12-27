@@ -41,7 +41,7 @@ public class Reservation {
         return numberOfHour;
     }
 
-    public void setNumberOfHour(int numberOfHour) {
+    public void setNumberOfHours(int numberOfHour) {
         this.numberOfHour = numberOfHour;
     }
 
