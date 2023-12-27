@@ -25,7 +25,7 @@ public class PaymentServiceImpl implements PaymentService {
         //Note that the reservationId always exists
         Reservation reservation=reservationRepository2.findById(reservationId).get();
         if(reservation==null ) return null;
-        int currbill=reservation.getNumberOfHour()*reservation.getSpot().getPricePerHour();
+        int currbill=reservation.getNumberOfHours()*reservation.getSpot().getPricePerHour();
         if(currbill>amountSent)
         {
             throw new Exception("Insufficient Amount");
