@@ -1,19 +1,35 @@
+//
+// Source code recreated from a .class file by IntelliJ IDEA
+// (powered by FernFlower decompiler)
+//
+
 package com.driver.model;
 
-import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 @Entity
-@Table(name = "parkingLot")
+@Table(
+        name = "parkingLot"
+)
 public class ParkingLot {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(
+            strategy = GenerationType.IDENTITY
+    )
     private int id;
     private String name;
     private String address;
-
-    @OneToMany(mappedBy = "parkingLot", cascade = CascadeType.ALL)
+    @OneToMany(
+            mappedBy = "parkingLot",
+            cascade = {CascadeType.ALL}
+    )
     List<Spot> spotList;
 
     public ParkingLot() {
@@ -27,7 +43,7 @@ public class ParkingLot {
     }
 
     public int getId() {
-        return id;
+        return this.id;
     }
 
     public void setId(int id) {
@@ -35,7 +51,7 @@ public class ParkingLot {
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public void setName(String name) {
@@ -43,7 +59,7 @@ public class ParkingLot {
     }
 
     public String getAddress() {
-        return address;
+        return this.address;
     }
 
     public void setAddress(String address) {
@@ -51,14 +67,10 @@ public class ParkingLot {
     }
 
     public List<Spot> getSpotList() {
-        return spotList;
+        return this.spotList;
     }
 
     public void setSpotList(List<Spot> spotList) {
         this.spotList = spotList;
     }
 }
-
-
-
-    

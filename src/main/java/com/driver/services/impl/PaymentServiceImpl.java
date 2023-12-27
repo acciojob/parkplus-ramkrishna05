@@ -1,3 +1,8 @@
+//
+// Source code recreated from a .class file by IntelliJ IDEA
+// (powered by FernFlower decompiler)
+//
+
 package com.driver.services.impl;
 
 import com.driver.model.Payment;
@@ -16,48 +21,39 @@ public class PaymentServiceImpl implements PaymentService {
     @Autowired
     PaymentRepository paymentRepository2;
 
-    @Override
+    public PaymentServiceImpl() {
+    }
+
     public Payment pay(Integer reservationId, int amountSent, String mode) throws Exception {
+        Reservation reservation = (Reservation)this.reservationRepository2.findById(reservationId).get();
+        if (reservation == null) {
+            return null;
+        } else {
+            int currbill = reservation.getNumberOfHours() * reservation.getSpot().getPricePerHour();
+            if (currbill > amountSent) {
+                throw new Exception("Insufficient Amount");
+            } else {
+                mode = mode.toUpperCase();
+                Payment payment = reservation.getPayment();
+                if (mode.equals("CASH")) {
+                    payment.setPaymentMode(PaymentMode.CASH);
+                } else if (mode.equals("CARD")) {
+                    payment.setPaymentMode(PaymentMode.CARD);
+                } else {
+                    if (!mode.equals("UPI")) {
+                        throw new Exception("Insufficient Amount");
+                    }
 
-        //Attempt a payment of amountSent for reservationId using the given mode ("cASh", "card", or "upi")
-        //If the amountSent is less than bill, throw "Insufficient Amount" exception, otherwise update payment attributes
-        //If the mode contains a string other than "cash", "card", or "upi" (any character in uppercase or lowercase), throw "Payment mode not detected" exception.
-        //Note that the reservationId always exists
-        Reservation reservation=reservationRepository2.findById(reservationId).get();
-        if(reservation==null ) return null;
-        int currbill=reservation.getNumberOfHours()*reservation.getSpot().getPricePerHour();
-        if(currbill>amountSent)
-        {
-            throw new Exception("Insufficient Amount");
+                    payment.setPaymentMode(PaymentMode.UPI);
+                }
+
+                payment.setPaymentCompleted(true);
+                payment.setReservation(reservation);
+                reservation.getSpot().setOccupied(false);
+                reservation.setPayment(payment);
+                this.reservationRepository2.save(reservation);
+                return payment;
+            }
         }
-       mode = mode.toUpperCase();
-        Payment payment=reservation.getPayment();
-
-        if(mode.equals("CASH"))
-        {
-           payment.setPaymentMode(PaymentMode.CASH);
-        }
-        else if (mode.equals("CARD"))
-        {
-            payment.setPaymentMode(PaymentMode.CARD);
-        }
-        else if(mode.equals("UPI"))
-        {
-            payment.setPaymentMode(PaymentMode.UPI);
-        }
-        else
-        {
-            throw new Exception("Insufficient Amount");
-        }
-        payment.setPaymentCompleted(true);
-        payment.setReservation(reservation);
-        reservation.getSpot().setOccupied(false);
-
-        reservation.setPayment(payment);
-
-        reservationRepository2.save(reservation);
-        return payment;
-
-
     }
 }
